@@ -2,7 +2,7 @@
 
 Kanban-style CRM for vehicle transport sales, from first quote to delivery. Built with React and TypeScript.
 
-**Live demo:** [add your GitHub Pages link here]
+**Live demo:** (https://teodor-ninkov.github.io/deal-pipeline/)]
 
 ![Screenshot](screenshot.png)
 
