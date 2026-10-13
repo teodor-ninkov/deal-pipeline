@@ -112,15 +112,16 @@ button.icon:hover { color: var(--ink); }
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; cursor: grab; box-shadow: var(--shadow); }
 .card:hover { border-color: var(--muted); }
 .card:active { cursor: grabbing; }
-.card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.card-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
+.price { white-space: nowrap; }
 .card h3 { font-size: 15px; font-weight: 700; }
 .card p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
 .card .vehicle { color: var(--ink); }
 .price { font-weight: 700; font-variant-numeric: tabular-nums; }
 .score { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; color: #fff; }
-.score-hot { background: var(--hot); }
-.score-warm { background: var(--warm); }
-.score-cold { background: var(--cold); }
+.score.score-hot { background: var(--hot); }
+.score.score-warm { background: var(--warm); }
+.score.score-cold { background: var(--cold); }
 .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
 .avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--line); color: var(--ink); font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
 .due { font-size: 12px; color: var(--muted); font-weight: 600; }
