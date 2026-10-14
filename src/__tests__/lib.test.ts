@@ -22,6 +22,8 @@ describe("csv", () => {
     const rows = parseCsv(csv);
     expect(rows).toHaveLength(deals.length);
     expect(rows[0].customer).toBe(deals[0].customer);
+    expect(Number(rows[0].activities)).toBe(deals[0].activities.length);
+    expect(rows[0].lastactivity).not.toBe("");
   });
 });
 

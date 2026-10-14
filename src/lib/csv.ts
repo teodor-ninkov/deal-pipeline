@@ -80,5 +80,11 @@ export function dealsToCsv(deals: Deal[]): string {
     const s = String(v ?? "");
     return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
   };
-  return [cols.join(","), ...deals.map(d => cols.map(c => esc(d[c])).join(","))].join("\n");
+  const lastActivity = (d: Deal) => {
+    const latest = [...d.activities].sort((a, b) => (a.at < b.at ? 1 : -1))[0];
+    return latest ? latest.text : "";
+  };
+  const header = [...cols, "activities", "lastActivity"].join(",");
+  const rows = deals.map(d => [...cols.map(c => esc(d[c])), d.activities.length, esc(lastActivity(d))].join(","));
+  return [header, ...rows].join("\n");
 }
