@@ -1,58 +1,34 @@
 # Deal Pipeline
 
-Kanban-style CRM for vehicle transport sales, from first quote to delivery. Built with React and TypeScript.
+A small CRM board for vehicle transport deals: New, Quoted, Negotiating, Booked, Delivered, Lost. It is the part that comes after [AI Lead Qualifier](https://github.com/teodor-ninkov/ai-lead-qualifier): you import its results and the scored leads land in New, each with a follow-up date based on its score.
 
-**Live demo:** (https://teodor-ninkov.github.io/deal-pipeline/)
+**Demo:** https://teodor-ninkov.github.io/deal-pipeline/ (starts with sample deals, your changes stay in your browser)
 
 ![Screenshot](screenshot.png)
 
-## Features
+## What it does
 
-- Board with six stages (New, Quoted, Negotiating, Booked, Delivered, Lost) and drag and drop between them
-- Deal panel: customer, vehicle, route, price, score, agent, pickup and follow-up dates
-- Activity log per deal: notes, calls, emails, with stage changes logged automatically
-- Summary strip: open pipeline value, won value, win rate, hot open deals, overdue follow-ups
-- Search and filters by agent, score and overdue status
-- CSV import that understands the output of [AI Lead Qualifier](https://github.com/teodor-ninkov/ai-lead-qualifier): imported leads land in New with a follow-up date based on their AI score
-- CSV export of the whole pipeline
-- Data is kept in the browser (localStorage), with sample data to start from
-- Keyboard accessible, light and dark mode, responsive down to mobile
+- Drag deals between stages; every stage change is logged on the deal
+- Open a deal to edit it and log calls, emails and notes
+- Top strip: open pipeline value, won value, win rate, hot open deals, overdue follow-ups
+- Search, filter by agent and score, show only overdue
+- CSV import (works with the lead qualifier output) and CSV export
 
-## Tech stack
+## How it is built
 
-- React 18, TypeScript, Vite
-- Plain CSS with custom properties, no UI library
-- Vitest and Testing Library for unit and component tests
+React and TypeScript with Vite, plain CSS, no UI library. State lives in `App.tsx` and is saved to localStorage. The calculations (`lib/metrics.ts`) and the CSV parsing (`lib/csv.ts`) are kept out of the components so they can be tested on their own. Tests use Vitest and Testing Library.
 
-## Project structure
+## Problems I hit
 
-```
-src/
-  App.tsx                  State, filtering, import/export
-  components/
-    Board.tsx              Columns and drag and drop
-    DealCard.tsx           Card on the board
-    DealDrawer.tsx         Edit panel with activity log
-    FilterBar.tsx          Search and filters
-    ImportDialog.tsx       CSV import with preview
-    Metrics.tsx            Summary strip
-  lib/
-    csv.ts                 CSV parser, import mapping, export
-    metrics.ts             Pipeline calculations
-    storage.ts             localStorage persistence
-    ids.ts                 Ids, dates, money formatting
-  data/sample.ts           Sample deals
-  __tests__/               Tests
-docs/                      Production build, served by GitHub Pages
-```
+- **Blank page on GitHub Pages.** Pages was serving the source `index.html`, which points to `main.tsx`, a file browsers cannot run. The fix: build into `docs/` and point Pages at that folder.
+- **CSV with commas and line breaks inside fields.** The follow-up emails from the qualifier contain both. Splitting on commas broke them, so the parser handles quoted fields properly, and there is a test for it.
+- **Empty deals piling up.** Clicking New deal and closing the panel left blank cards on the board. Now a deal with no name and no activity is removed when you close it.
 
 ## Run locally
 
 ```bash
-git clone https://github.com/teodor-ninkov/deal-pipeline.git
-cd deal-pipeline
 npm install
-npm run dev
+npm run dev     # local server
+npm test        # tests
+npm run build   # type check and build into docs/
 ```
-
-`npm test` runs the tests, `npm run build` type-checks and builds into `docs/`.
