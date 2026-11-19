@@ -1,12 +1,14 @@
+import type { RefObject } from "react";
 import { Filters, SCORES, Score } from "../types";
 
 interface Props {
   filters: Filters;
   agents: string[];
   onChange: (f: Filters) => void;
+  searchRef?: RefObject<HTMLInputElement | null>;
 }
 
-export default function FilterBar({ filters, agents, onChange }: Props) {
+export default function FilterBar({ filters, agents, onChange, searchRef }: Props) {
   const toggleScore = (s: Score) => {
     const scores = filters.scores.includes(s) ? filters.scores.filter(x => x !== s) : [...filters.scores, s];
     onChange({ ...filters, scores });
@@ -15,6 +17,7 @@ export default function FilterBar({ filters, agents, onChange }: Props) {
   return (
     <section className="filters" aria-label="Filters">
       <input
+        ref={searchRef}
         type="search"
         className="search"
         placeholder="Search customer, vehicle or route"
