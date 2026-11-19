@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      # GitHub Pages serves the committed docs/ folder, so a change to src/ must come with a fresh build.
+      - name: Check that docs/ matches the source
+        run: |
+          if [ -n "$(git status --porcelain docs)" ]; then
+            git status --short docs
+            echo "::error::docs/ is out of date. Run npm run build and commit docs/."
+            exit 1
+          fi
